@@ -1,5 +1,7 @@
 extends Area2D
 
+signal hit
+
 # Declare member variables here.
 export var speed = 400 # pixels/sec
 var screen_size
@@ -43,3 +45,14 @@ func _process(delta):
 		$AnimatedSprite.flip_v = false
 		# See the note below about boolean assignment
 		$AnimatedSprite.flip_h = velocity.x < 0
+
+
+func _on_Player_body_entered(body):
+	hide()
+	emit_signal("hit")
+	$CollisionShape2D.set_deferred("disabled", true)
+	
+func start(pos):
+	position = pos
+	show()
+	$CollisionShape2D.disabled = false
